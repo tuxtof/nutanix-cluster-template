@@ -32,17 +32,7 @@ spec:
       quantity: {{ $nodepool.quantity }}
       name: {{ $nodepool.name }}
       machineConfigRef:
-        {{- if eq $.Values.cloudprovider "amazonec2" }}
-        kind: Amazonec2Config
-        {{- else if eq $.Values.cloudprovider "vsphere" }}
-        kind: VmwarevsphereConfig
-        {{- else if eq $.Values.cloudprovider "harvester" }}
-        kind: HarvesterConfig
-        {{- else if eq $.Values.cloudprovider "digitalocean" }}
-        kind: DigitaloceanConfig
-        {{- else if eq $.Values.cloudprovider "azure" }}
-        kind: AzureConfig
-        {{- end}}
+        kind: NutanixConfig
         name: {{ $nodepool.name }}
       paused: {{ $nodepool.paused }}
       displayName: {{ $nodepool.displayName }}
@@ -69,17 +59,7 @@ spec:
       quantity: {{ $nodepool.quantity }}
       name: {{ $nodepool.name }}
       machineConfigRef:
-        {{- if eq $.Values.cloudprovider "amazonec2" }}
-        kind: Amazonec2Config
-        {{- else if eq $.Values.cloudprovider "vsphere" }}
-        kind: VmwarevsphereConfig
-        {{- else if eq $.Values.cloudprovider "harvester" }}
-        kind: HarvesterConfig
-        {{- else if eq $.Values.cloudprovider "digitalocean" }}
-        kind: DigitaloceanConfig
-        {{- else if eq $.Values.cloudprovider "azure" }}
-        kind: AzureConfig
-        {{- end}}
+        kind: NutanixConfig
         name: {{ $nodepool.name }}
       paused: {{ $nodepool.paused }}
       displayName: {{ $nodepool.displayName }}
@@ -108,7 +88,7 @@ spec:
       # Cluster Domain (default: "cluster.local")
       # cluster-domain: ""
       # CNI Plugin to deploy, one of none, canal, cilium (default: "canal")
-      cni: calico
+      cni: {{ .Values.containerNetwork }}
       # Do not deploy packaged components and delete any deployed components (valid items: rke2-coredns, rke2-ingress-nginx, rke2-kube-proxy, rke2-metrics-server)
       # disable: false
       # Disable automatic etcd snapshots

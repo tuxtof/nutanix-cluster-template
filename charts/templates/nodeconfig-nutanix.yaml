@@ -1,0 +1,72 @@
+{{- if eq .Values.cloudprovider "nutanix" }}
+{{- range $index, $nodepool := .Values.nodepools }}
+apiVersion: rke-machine-config.cattle.io/v1
+kind: NutanixConfig
+metadata:
+  name: {{ $nodepool.name }}
+  namespace: fleet-default
+common:
+{{- if $nodepool.labels }}
+  labels:
+{{ toYaml $nodepool.labels | indent 4 }}
+{{- end }}
+{{- if $nodepool.taints }}
+  taints:
+{{ toYaml $nodepool.taints | indent 4 }}
+{{- end }}
+{{- if $nodepool.cfgparam }}
+cfgparam: {{ $nodepool.cfgparam }}
+{{- end }}
+cloudInit: {{ $nodepool.cloudInit }}
+cluster: {{ $nodepool.cluster }}
+diskSize: {{ $nodepool.diskSize | quote }}
+insecure: {{ $nodepool.insecure }}
+storageContainer: {{ $nodepool.storageContainer }}
+vmCategories: {{ $nodepool.vmCategories }}
+vmCores: {{ $nodepool.vmCores | quote }}
+vmCpuPassthrough: {{ $nodepool.vmCpuPassthrough }}
+vmCpus: {{ $nodepool.vmCpus | quote }}
+vmImage: {{ $nodepool.vmImage }}
+vmImageSize: {{ $nodepool.vmImageSize | quote }}
+vmMem: {{ $nodepool.vmMem | quote }}
+vmNetwork:
+  - {{ $nodepool.vmNetwork }}
+---
+{{- end }}
+{{ $nodepool := .Values.nodepool }}
+{{- if $nodepool }}
+apiVersion: rke-machine-config.cattle.io/v1
+kind: NutanixConfig
+metadata:
+  name: {{ $nodepool.name }}
+  namespace: fleet-default
+common:
+{{- if $nodepool.labels }}
+  labels:
+{{ toYaml $nodepool.labels | indent 4 }}
+{{- end }}
+{{- if $nodepool.taints }}
+  taints:
+{{ toYaml $nodepool.taints | indent 4 }}
+{{- end }}
+{{- if $nodepool.cfgparam }}
+cfgparam: {{ $nodepool.cfgparam }}
+{{- end }}
+cloudInit: {{ $nodepool.cloudInit }}
+cluster: {{ $nodepool.cluster }}
+diskSize: {{ $nodepool.diskSize | quote }}
+insecure: {{ $nodepool.insecure }}
+storageContainer: {{ $nodepool.storageContainer }}
+vmCategories: {{ $nodepool.vmCategories }}
+vmCores: {{ $nodepool.vmCores | quote }}
+vmCpuPassthrough: {{ $nodepool.vmCpuPassthrough }}
+vmCpus: {{ $nodepool.vmCpus | quote }}
+vmImage: {{ $nodepool.vmImage }}
+vmImageSize: {{ $nodepool.vmImageSize | quote }}
+vmMem: {{ $nodepool.vmMem | quote }}
+vmNetwork: 
+  - {{ $nodepool.vmNetwork }}
+{{- end }}
+{{- end }}
+
+
