@@ -110,10 +110,13 @@ questions:
   # Nutanix
   - variable: nodepools.0.cluster
     label: "Cluster"
-    default: ""
-    type: hostname
+    default: "cloud-prod"
     description: "The name of the cluster where deploy virtual machine"
+    type: enum
     required: true
+    options:
+      - cloud-prod
+      - gpu-prod
     group: "Nodepools"
   - variable: nodepools.0.vmCpus
     label: "CPUs"
@@ -129,23 +132,23 @@ questions:
     group: "Nodepools"
   - variable: nodepools.0.vmMem
     label: "Memory Size"
-    default: "2048"
+    default: "8192"
     type: string
     description: "size of memory for VM (in MB)"
     group: "Nodepools"
 
   - variable: nodepools.0.vmImage
     label: "Template image"
-    default: ""
+    default: "Ubuntu 2204 LTS"
     type: string
     description: "The name of the disk image to use as template for the VM"
     required: true
     group: "Nodepools"
   - variable: nodepools.0.vmImageSize
     label: "Template image size"
-    default: "0"
+    default: "120"
     type: string
-    description: "Size to extand the template disk. Set this to zero if you don't want to extend the template disk"
+    description: "Size in GB to extand the template disk. Set this to zero if you don't want to extend the template disk"
     required: true
     group: "Nodepools"
 
