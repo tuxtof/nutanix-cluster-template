@@ -1,19 +1,17 @@
 questions:
   - variable: cluster.name
-    default: mycluster
     description: "Specify the name of the cluster"
     label: "Cluster Name"
     required: true
     type: string
     group: "General"
   - variable: cloudCredentialSecretName
-    default:
     description: "CloudCredentialName for provisioning cluster"
     label: "CloudCredential Name"
     type: cloudcredential
     group: "General"
   - variable: kubernetesVersion
-    default: v1.24.4+rke2r1
+    default: "v1.26.7+rke2r1"
     description: "Specify Kubernetes version"
     label: "Kubernetes Version"
     type: enum
@@ -29,8 +27,8 @@ questions:
       - v1.23.17+k3s1
     group: "General"
   - variable: containerNetwork
-    default: calico
-    description: "Specify Container Network"
+    default: cilium
+    description: "Specify Container Network Interface"
     label: "Container Network"
     type: enum
     required: true
@@ -38,6 +36,7 @@ questions:
       - calico
       - cilium
     group: "General"
+
   - variable: rke.localClusterAuthEndpoint.enabled
     default: false
     label: "Local Auth endpoint"
@@ -58,6 +57,7 @@ questions:
         description: "Local auth access endpoint CACerts"
         type: multiline
         group: "Auth Access Endpoint"
+
   - variable: monitoring.enabled
     default: false
     label: "Enable monitoring"
@@ -78,35 +78,38 @@ questions:
         description: "Custom monitoring chart values"
         type: multiline
         group: "Monitoring"
+
+  # Nodepool 0
   - variable: nodepools.0.name
-    default: pool1
+    default: cp
     description: "Specify nodepool name"
     type: string
     label: "Nodepool name"
     required: true
-    group: "Nodepools"
+    group: "Control Plane"
   - variable: nodepools.0.quantity
     default: 1
     description: "Specify node count"
     type: int
     required: true
     label: "Node count"
-    group: "Nodepools"
+    group: "Control Plane"
   - variable: nodepools.0.etcd
     default: true
     label: etcd
     type: boolean
-    group: "Nodepools"
-  - variable: nodepools.0.worker
-    default: true
-    label: worker
-    type: boolean
-    group: "Nodepools"
+    group: "Control Plane"
   - variable: nodepools.0.controlplane
     label: controlplane
     default: true
     type: boolean
-    group: "Nodepools"
+    group: "Control Plane"
+  - variable: nodepools.0.worker
+    default: false
+    label: worker
+    type: boolean
+    group: "Control Plane"
+
   # Nutanix
   - variable: nodepools.0.cluster
     label: "Cluster"
@@ -117,25 +120,25 @@ questions:
     options:
       - cloud-prod
       - gpu-prod
-    group: "Nodepools"
+    group: "Control Plane"
   - variable: nodepools.0.vmCpus
     label: "CPUs"
     default: "4"
     type: string
     description: "Number of vCpus inside your VMs"
-    group: "Nodepools"
+    group: "Control Plane"
   - variable: nodepools.0.vmCores
     label: "Core/Cpus"
     default: "1"
     type: string
     description: "Number of Core by vCpus inside your VMs"
-    group: "Nodepools"
+    group: "Control Plane"
   - variable: nodepools.0.vmMem
     label: "Memory Size"
     default: "8192"
     type: string
     description: "size of memory for VM (in MB)"
-    group: "Nodepools"
+    group: "Control Plane"
 
   - variable: nodepools.0.vmImage
     label: "Template image"
@@ -143,19 +146,108 @@ questions:
     type: string
     description: "The name of the disk image to use as template for the VM"
     required: true
-    group: "Nodepools"
+    group: "Control Plane"
   - variable: nodepools.0.vmImageSize
     label: "Template image size"
     default: "120"
     type: string
     description: "Size in GB to extand the template disk. Set this to zero if you don't want to extend the template disk"
     required: true
-    group: "Nodepools"
+    group: "Control Plane"
 
   - variable: nodepools.0.vmNetwork
     label: "Network"
     required: true
-    default: ""
+    default: "devops"
     type: string
     description: "Network where the virtual machine will be attached"
-    group: "Nodepools"
+    group: "Control Plane"
+
+  - variable: cloudinit
+    label: "Cloudinit"
+    required: true
+    default: ""
+    type: multiline
+    description: "User-data to inject inside each nodes"
+    group: "Control Plane"
+
+  # Nodepool 1
+  - variable: nodepools.1.name
+    default: node
+    description: "Specify nodepool name"
+    type: string
+    label: "Nodepool name"
+    required: true
+    group: "Node"
+  - variable: nodepools.1.quantity
+    default: 1
+    description: "Specify node count"
+    type: int
+    required: true
+    label: "Node count"
+    group: "Node"
+  - variable: nodepools.1.worker
+    default: true
+    label: worker
+    type: boolean
+    group: "Node"
+  # Nutanix
+  - variable: nodepools.1.cluster
+    label: "Cluster"
+    default: "cloud-prod"
+    description: "The name of the cluster where deploy virtual machine"
+    type: enum
+    required: true
+    options:
+      - cloud-prod
+      - gpu-prod
+    group: "Node"
+  - variable: nodepools.1.vmCpus
+    label: "CPUs"
+    default: "4"
+    type: string
+    description: "Number of vCpus inside your VMs"
+    group: "Node"
+  - variable: nodepools.1.vmCores
+    label: "Core/Cpus"
+    default: "1"
+    type: string
+    description: "Number of Core by vCpus inside your VMs"
+    group: "Node"
+  - variable: nodepools.1.vmMem
+    label: "Memory Size"
+    default: "8192"
+    type: string
+    description: "size of memory for VM (in MB)"
+    group: "Node"
+
+  - variable: nodepools.1.vmImage
+    label: "Template image"
+    default: "Ubuntu 2204 LTS"
+    type: string
+    description: "The name of the disk image to use as template for the VM"
+    required: true
+    group: "Node"
+  - variable: nodepools.1.vmImageSize
+    label: "Template image size"
+    default: "120"
+    type: string
+    description: "Size in GB to extand the template disk. Set this to zero if you don't want to extend the template disk"
+    required: true
+    group: "Node"
+
+  - variable: nodepools.1.vmNetwork
+    label: "Network"
+    required: true
+    default: "devops"
+    type: string
+    description: "Network where the virtual machine will be attached"
+    group: "Node"
+
+  - variable: cloudinit
+    label: "Cloudinit"
+    required: true
+    default: ""
+    type: multiline
+    description: "User-data to inject inside each nodes"
+    group: "Node"

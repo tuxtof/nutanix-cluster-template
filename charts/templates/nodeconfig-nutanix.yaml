@@ -3,7 +3,7 @@
 apiVersion: rke-machine-config.cattle.io/v1
 kind: NutanixConfig
 metadata:
-  name: {{ $nodepool.name }}
+  name: "{{ $.Values.cluster.name }}-{{ $nodepool.name }}"
   namespace: fleet-default
 common:
 {{- if $nodepool.labels }}
@@ -17,7 +17,7 @@ common:
 {{- if $nodepool.cfgparam }}
 cfgparam: {{ $nodepool.cfgparam }}
 {{- end }}
-cloudInit: {{ $nodepool.cloudInit }}
+cloudInit: {{ $.Values.cloudinit | quote }}
 cluster: {{ $nodepool.cluster }}
 diskSize: {{ $nodepool.diskSize | quote }}
 insecure: {{ $nodepool.insecure }}
@@ -38,7 +38,7 @@ vmNetwork:
 apiVersion: rke-machine-config.cattle.io/v1
 kind: NutanixConfig
 metadata:
-  name: {{ $nodepool.name }}
+  name: "{{ $.Values.cluster.name }}-{{ $nodepool.name }}"
   namespace: fleet-default
 common:
 {{- if $nodepool.labels }}
@@ -52,7 +52,7 @@ common:
 {{- if $nodepool.cfgparam }}
 cfgparam: {{ $nodepool.cfgparam }}
 {{- end }}
-cloudInit: {{ $nodepool.cloudInit }}
+cloudInit: {{ $.Values.cloudinit | quote }}
 cluster: {{ $nodepool.cluster }}
 diskSize: {{ $nodepool.diskSize | quote }}
 insecure: {{ $nodepool.insecure }}

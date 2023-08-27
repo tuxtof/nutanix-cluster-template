@@ -62,7 +62,14 @@ nodepools:
     # specify nodepool name
     name: nutanix-nodepool-1
 
-    cloudInit: ""
+    cloudInit: |
+      #cloud-config
+
+      users:
+        - name: cris
+          ssh_authorized_keys:
+            - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC+SPFPQsTgPRpA09P+MNaCB0nrOZfo/kQMBOWLPKIeW cris@geo6.net
+          sudo: ['ALL=(ALL) NOPASSWD:ALL']
     cluster: ""
     diskSize: "0"
     insecure: false

@@ -30,10 +30,10 @@ spec:
       etcdRole: {{ $nodepool.etcd }}
       workerRole: {{ $nodepool.worker }}
       quantity: {{ $nodepool.quantity }}
-      name: {{ $nodepool.name }}
+      name: {{ $.Values.cluster.name }}-{{ $nodepool.name }}
       machineConfigRef:
         kind: NutanixConfig
-        name: {{ $nodepool.name }}
+        name: {{ $.Values.cluster.name }}-{{ $nodepool.name }}
       paused: {{ $nodepool.paused }}
       displayName: {{ $nodepool.displayName }}
       {{- if $nodepool.rollingUpdate }}
@@ -57,10 +57,10 @@ spec:
       etcdRole: {{ $nodepool.etcd }}
       workerRole: {{ $nodepool.worker }}
       quantity: {{ $nodepool.quantity }}
-      name: {{ $nodepool.name }}
+      name: {{ $.Values.cluster.name }}-{{ $nodepool.name }}
       machineConfigRef:
         kind: NutanixConfig
-        name: {{ $nodepool.name }}
+        name: {{ $.Values.cluster.name }}-{{ $nodepool.name }}
       paused: {{ $nodepool.paused }}
       displayName: {{ $nodepool.displayName }}
       {{- if $nodepool.rollingUpdate }}
